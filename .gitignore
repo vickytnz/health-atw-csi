@@ -13,3 +13,5 @@ node_modules/*
 package-lock.json
 lib/extensions/_extensions.scss
 lib/extensions/_extensions.scss
+# don't save form for now
+app/assets/claim-form.docx
