@@ -3,17 +3,16 @@
 {% set return = "claim" %}
 {% set hideChange = true %}
 {% set customNext = "Save" %}
+{% set title = "Change personal details" %}
 {% extends folder + "/" + subfolder + "/csi/_CSIQUESTION.html" %}
 
 {% block csi %}
-
-<h1 class="govuk-heading-xl">Change personal details</h1>
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {{ govukInput({
   label: {
-    text: "Firstname"
+    text: "First name"
   },
   id: "name",
   name: "firstname-change",
@@ -26,7 +25,7 @@
 
 {{ govukInput({
   label: {
-    text: "Surname"
+    text: "Last name"
   },
   id: "name",
   name: "surname-change",
@@ -134,8 +133,7 @@
 
   }) }}
 
-  {% from "govuk/components/input/macro.njk" import govukInput %}
-
+{% set emailHtml %}
 {{ govukInput({
   label: {
     text: "Email address"
@@ -146,18 +144,82 @@
   classes: "govuk-input--width-20"
 }) }}
 
-{% from "govuk/components/input/macro.njk" import govukInput %}
+<p >
+    Department for Work and Pensions (DWP) cannot guarantee external emails against:</p>
+    <ul class="govuk-list govuk-list--bullet">
+    <li>loss or non-delivery</li>
+    <li>theft by third parties</li>
+    <li>manipulation of data</li>
+    </ul>
+    <p>Asking DWP to use email to get in touch with you in this application means you understand this risk. If you have any concerns then do not include your email address.</p>
 
+
+
+                                                                  {{ govukCheckboxes({
+                                       name: "agree-email-terms-change",
+
+                                       items: [
+                                         {
+                                           value: "Yes",
+                                           checked: checked("['csi-info'][1]['agree-email-terms']", "Yes" ),
+                                           text: "Applicant agrees to the email terms"
+                                         }
+                                       ]
+                                     }) }}
+
+{% endset -%}
+
+{% set telephoneHtml %}
 {{ govukInput({
   label: {
-    text: "Phone number"
+    text: "Telephone number"
   },
   id: "phone",
   name: "contact-by-phone-change",
   value: data['csi-info'][1]['contact-by-phone'],
   classes: "govuk-input--width-20"
 }) }}
+{% endset -%}
+
+
+
+
+
+
+
+{{ govukCheckboxes({
+  name: "personal-contact-preference",
+  fieldset: {
+    legend: {
+      text: "Contact details",
+      isPageHeading: false
+    }
+  },
+
+  items: [
+    {
+      value: "email",
+      text: "Email",
+      checked: checked("['csi-info'][1]['personal-contact-preference']", "email"),
+      conditional: {
+        html: emailHtml
+      }
+    },
+    {
+      value: "phone",
+      text: "Telephone",
+      checked: checked("['csi-info'][1]['personal-contact-preference']", "phone"),
+      conditional: {
+        html: telephoneHtml
+      }
+    }
+  ]
+}) }}
+
+
 
 {% endcall %}
+
+
 
 {% endblock %}
